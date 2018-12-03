@@ -30,3 +30,9 @@
     transform: rotate(360deg);
   }
 }
+#head{
+  background-color:black;
+  width:100%;
+  color:white;
+  height:70px;
+}
