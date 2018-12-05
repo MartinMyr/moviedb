@@ -48,5 +48,47 @@ input{
   outline: 0;
   background: transparent;
   border-bottom: 2px solid red;
+}
+.fa-icon{
+margin:15px;
+  transition: 2s;
 
+}
+#an1{
+  margin:0;
+  padding:0;
+  position: relative;
+  left: -1000px;
+  -webkit-animation: slide 1s forwards;
+  -webkit-animation-delay: 1s;
+  animation: slide 0.5s forwards;
+  animation-delay: 1s;
+}
+#an2{
+  margin:0;
+  padding:0;
+  position: relative;
+  left: 1000px;
+  -webkit-animation: slide 1s forwards;
+  -webkit-animation-delay: 1s;
+  animation: slide 0.5s forwards;
+  animation-delay: 1s;
+}
+span{
+  display:flex;
+  justify-content:center;
+
+}
+.wrapper{
+  display:flex;
+  justify-content:center;
+}
+
+
+@-webkit-keyframes slide {
+  100% { left: 0; }
+}
+
+@keyframes slide {
+  100% { left: 0; }
 }

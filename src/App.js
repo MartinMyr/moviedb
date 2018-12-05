@@ -2,20 +2,51 @@ import React, { Component } from 'react';
 import './App.css';
 import MovieRow from './MovieRow.js';
 import $ from 'jquery';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import '../node_modules/font-awesome/css/font-awesome.min.css';
-
+import { FaArrowDown } from 'react-icons/fa';
+import { FaArrowUp } from 'react-icons/fa';
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {};
   }
-  onClick(){
-    console.log("asd");
-  }
+
+    onClickUp(){
+        if (this.state.rows) {
+            const data = this.state.rows;
+            data.sort(function (b, a) {
+                return parseInt(b.props.movie.vote_average) - parseInt(a.props.movie.vote_average);
+            });
+            const movieRows = [];
+            data.forEach((movie) => {
+                movie.props.movie.poster_src = "https://image.tmdb.org/t/p/w185" + movie.props.movie.poster_path;
+                console.log(movie.props.movie);
+                const movieRow = <MovieRow key={movie.props.movie.id} movie={movie.props.movie}/>;
+                movieRows.push(movieRow);
+            });
+            this.setState({rows: movieRows})
+        }
+    }
+
+    onClick(){
+
+      if (this.state.rows) {
+          const data = this.state.rows;
+          console.log(this.state.rows);
+          data.sort(function (b, a) {
+              return parseInt(a.props.movie.vote_average) - parseInt(b.props.movie.vote_average);
+          });
+          const movieRows = [];
+          data.forEach((movie) => {
+              movie.props.movie.poster_src = "https://image.tmdb.org/t/p/w185" + movie.props.movie.poster_path;
+              console.log(movie.props.movie);
+              const movieRow = <MovieRow key={movie.props.movie.id} movie={movie.props.movie}/>;
+              movieRows.push(movieRow);
+          });
+          this.setState({rows: movieRows})
+      }
+    }
   performSearch(searchTerm){
-      console.log(searchTerm);
     const urlString ="https://api.themoviedb.org/3/search/movie?api_key=e7e24a5efae7dd5aecf08d05791f3312&query=" +searchTerm;
     $.ajax({
         url:urlString,
@@ -26,17 +57,15 @@ class App extends Component {
             const results = searchResults.results;
             var movieRows = [];
 
-
             results.sort(function(b,a){
-                return parseInt(a.vote_average)  - parseInt(b.vote_average);
+                return parseInt(b.vote_average)  - parseInt(a.vote_average);
             });
-
             results.forEach((movie) => {
                 movie.poster_src = "https://image.tmdb.org/t/p/w185"+ movie.poster_path;
                 const movieRow = <MovieRow key ={movie.id} movie={movie}/>;
                 movieRows.push(movieRow);
             });
-            this.setState({rows: movieRows})
+            this.setState({rows: movieRows});
       },
         error:(xhr, status, err) => {
             console.log("Failed to fetch data")
@@ -57,15 +86,23 @@ class App extends Component {
           <tbody>
             <tr >
               <td>
-              <h2>MovieDB</h2>
+                  <span>
+                      <h2 id="an1">Movie</h2>
+                      <h2 id="an2">DB</h2>
+                  </span>
+
               </td>
             </tr>
           </tbody>
         </table>
           <input type="text" onChange={this.searchChangeHandler.bind(this)} placeholder="Sök film"/>
-          <button onClick={this.onClick.bind(this)}>Sort</button>
-          <div>
-
+          <div className="wrapper">
+              <div onClick={this.onClick.bind(this)} className="fa-icon">
+                  <FaArrowDown/>
+              </div>
+              <div onClick={this.onClickUp.bind(this)} className="fa-icon">
+                  <FaArrowUp/>
+              </div>
           </div>
           {this.state.rows}
 
